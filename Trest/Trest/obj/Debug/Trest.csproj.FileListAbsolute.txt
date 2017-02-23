@@ -1,0 +1,6 @@
+c:\users\pervolo\documents\visual studio 2015\Projects\Trest\Trest\bin\Debug\Trest.exe.config
+c:\users\pervolo\documents\visual studio 2015\Projects\Trest\Trest\bin\Debug\Trest.exe
+c:\users\pervolo\documents\visual studio 2015\Projects\Trest\Trest\bin\Debug\Trest.pdb
+c:\users\pervolo\documents\visual studio 2015\Projects\Trest\Trest\obj\Debug\Trest.csprojResolveAssemblyReference.cache
+c:\users\pervolo\documents\visual studio 2015\Projects\Trest\Trest\obj\Debug\Trest.exe
+c:\users\pervolo\documents\visual studio 2015\Projects\Trest\Trest\obj\Debug\Trest.pdb
