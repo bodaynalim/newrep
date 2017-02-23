@@ -39,21 +39,42 @@ namespace WpfApplication1
         static string[] http = {"http://speedtest.newark.linode.com/100MB-newark.bin","http://speedtest.atlanta.linode.com/100MB-atlanta.bin",
             "http://speedtest.frankfurt.linode.com/100MB-frankfurt.bin", "http://speedtest.singapore.linode.com/100MB-singapore.bin" };
 
-        static readonly string result = @"C:\Users\pervolo\AppData\Local\Temp\";
-        static Download down;
 
+        static readonly string result = @"C:\Users\pervolo\AppData\Local\Temp\";
+    
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            button.IsEnabled = false;
-            button1.IsEnabled = false;
-            button2.IsEnabled = false;
-            Download1();
+            listView.Items.Clear();
+            Disbuttons();
+            for (int i = 0; i < http.Length; i++)
+            {
+                func1(http[i]);
+                    
+            }
 
         }
 
+        public void Enabledbuttons()
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                button.IsEnabled = true; button2.IsEnabled = true; button1.IsEnabled = true;
+            });
+        }
+
+        public void Disbuttons()
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                button1.IsEnabled = false; button.IsEnabled = false; button2.IsEnabled = false;
+            });
+        }
+
+
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            
+            listView.Items.Clear();
+
             for (int i = 0; i < http.Length; i++)
             {
                 
@@ -66,57 +87,20 @@ namespace WpfApplication1
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
-            button.IsEnabled = false;
-            button1.IsEnabled = false;
-            button2.IsEnabled = false;
+            listView.Items.Clear();
+            Disbuttons();
             DisplayResultAsync();
-           
-
+          
         }
 
 
-       public  void Download1()
-        {
-            WebClient client = new WebClient();
-            Stopwatch st = new Stopwatch();
-            for (int i = 0; i < http.Length; i++)
-            {
-                st.Start();
-
-                client.DownloadFile((string)http[i], result + "myBook" + i + ".bin");
-
-                st.Stop();
-                listView.Items.Add(new Download() { Time = st.Elapsed.ToString(), Site = (string)http[i] });
-                st.Reset();
-            }
-            for (int i = 0; i < 4; i++)
-                File.Delete(result + "myBook" + i + ".bin");
-
-            button.IsEnabled = true;
-            button1.IsEnabled = true;
-            button2.IsEnabled = true;
-
-
-
-
-        }
-
+      
         static int number = 0;
 
         void func1(object http)
         {
-            button.Dispatcher.Invoke(() =>
-            {
-                button.IsEnabled = false;
-});
-            button2.Dispatcher.Invoke(() =>
-            {
-                button2.IsEnabled = false;
-            });
-            button1.Dispatcher.Invoke(() =>
-            {
-                button1.IsEnabled = false;
-            });
+            Disbuttons();
+           
             int numb = number;
             number++;
             WebClient client = new WebClient();
@@ -124,7 +108,7 @@ namespace WpfApplication1
             st.Start();
             client.DownloadFile((string)http, result + "myBook" + numb + ".bin");
             st.Stop();
-            Console.WriteLine(http + ": {0} ", st.Elapsed);
+            
             listView.Dispatcher.Invoke(() =>
             {
                 listView.Items.Add(new Download() { Time = st.Elapsed.ToString(), Site = (string)http });
@@ -134,18 +118,8 @@ namespace WpfApplication1
            
             File.Delete(result + "myBook" + numb + ".bin");
 
-            button.Dispatcher.Invoke(() =>
-            {
-                button.IsEnabled = true;
-            });
-            button2.Dispatcher.Invoke(() =>
-            {
-                button2.IsEnabled = true;
-            });
-            button1.Dispatcher.Invoke(() =>
-            {
-                button1.IsEnabled = true;
-            });
+            Enabledbuttons();
+           
 
 
         }
