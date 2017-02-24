@@ -33,23 +33,13 @@
 
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="button" Grid.Column="0" Height="30"  Content="Sync download" Command="{Binding SyncDownload}"/>
+            <Button x:Name="button" Grid.Column="0" Height="30"  Content="Sync download" Command="{Binding SyncDownload}" IsEnabled="{Binding IsButtonEnabled}"/>
 
 
-            <Button x:Name="button1" Grid.Column="1" Height="30"  Content="Threaded download" Command="{Binding ThreadDownload}" >
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="IsEnabled" Value="True"></Setter>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ISEnabled}" Value="False">
-                                <Setter Property="IsEnabled" Value="False"></Setter>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
+            <Button x:Name="button1" Grid.Column="1" Height="30"  Content="Threaded download" Command="{Binding ThreadDownload}" IsEnabled="{Binding IsButtonEnabled}" />
 
-            <Button x:Name="button2" Grid.Column="2" Height="30"  Content="Async download" Command="{Binding AsyncDownload}" />
+
+            <Button x:Name="button2" Grid.Column="2" Height="30"  Content="Async download" Command="{Binding AsyncDownload}" IsEnabled="{Binding IsButtonEnabled}" />
 
         </Grid>
 

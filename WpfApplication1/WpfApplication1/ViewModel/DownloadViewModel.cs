@@ -16,14 +16,14 @@ namespace WpfApplication1.ViewModel
     class DownloadViewModel : INotifyPropertyChanged
     {
         #region Button Enables
-       public bool isButtonEnabled;
+      private bool _isButtonEnabled;
         public bool IsButtonEnabled
         {
-            get { return isButtonEnabled; }
+            get { return _isButtonEnabled; }
             set
             {
-                isButtonEnabled = value;
-                OnPropertyChanged("ISEnabled");
+                _isButtonEnabled = value;
+                OnPropertyChanged(nameof(IsButtonEnabled));
             }
         }
 
@@ -39,9 +39,11 @@ namespace WpfApplication1.ViewModel
         public DownloadViewModel()
         {
             _files = new ObservableCollection<Download>();
-            
-            
-             }
+            _isButtonEnabled = true;
+
+
+
+        }
         #endregion
 
         #region Public Properties
@@ -94,7 +96,8 @@ namespace WpfApplication1.ViewModel
         private void StartThreadDownload(object arg)
         {
             _files.Clear();
-            isButtonEnabled = false;
+             _isButtonEnabled = false; 
+
             for (int i = 0; i < http.Length; i++)
             {
 
@@ -113,6 +116,7 @@ namespace WpfApplication1.ViewModel
         private void StartAsyncDownload(object arg)
         {
             _files.Clear();
+            _isButtonEnabled = false;
             DisplayResultAsync();
         }
 
@@ -124,7 +128,7 @@ namespace WpfApplication1.ViewModel
 
         void DownLoad(object http)
         {
-           
+            
 
             int numb = number;
             number++;
@@ -139,6 +143,7 @@ namespace WpfApplication1.ViewModel
             });
            
              File.Delete(result + "myBook" + numb + ".bin");
+        
              
 
         }
