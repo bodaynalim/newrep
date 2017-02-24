@@ -20,9 +20,14 @@ namespace Calculator
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Private Variables
+        private readonly CalculatorViewModel _calculatorViewModel;
+        #endregion
         public MainWindow()
         {
             InitializeComponent();
+            _calculatorViewModel = new CalculatorViewModel();
+            DataContext = _calculatorViewModel;
         }
     }
 }
