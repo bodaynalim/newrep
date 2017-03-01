@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using static System.Int32;
 
 namespace Calculator
 {
@@ -17,7 +21,10 @@ namespace Calculator
             
             #region Private Variables
             private string _buttonText;
-            private string _answer;
+            private string _Input;
+            private bool isPlusOrMinusClicked;
+            private bool isNewDigitEntered;
+            private bool isEqualClicked;
 
         #endregion
 
@@ -25,12 +32,15 @@ namespace Calculator
         public CalculatorViewModel()
             {
             _buttonText = "";
-                _answer="";
+            _Input="";
+            isPlusOrMinusClicked = false;
+            isNewDigitEntered = false;
+            isEqualClicked = false;
 
             }
             #endregion
 
-            #region Public Properties
+       #region Public Properties
             public string ButtonText
             {
                 get { return _buttonText; }
@@ -40,13 +50,51 @@ namespace Calculator
                     OnPropertyChanged("ButtonText");
                 }
             }
-        public string Answer
+        public string Input
         {
-            get { return _answer; }
+            get { return _Input; }
             set
             {
-                _answer = value;
-                OnPropertyChanged("Answer");
+                _Input = value;
+                OnPropertyChanged("Input");
+            }
+        }
+
+        public bool IsPlusOrMinusClicked
+        {
+            get
+            {
+                return isPlusOrMinusClicked;
+            }
+
+            set
+            {
+                isPlusOrMinusClicked = value;
+            }
+        }
+
+        public bool IsNewDigitEntered
+        {
+            get
+            {
+                return isNewDigitEntered;
+            }
+
+            set
+            {
+                isNewDigitEntered = value;
+            }
+        }
+        public bool IsEqualClicked
+        {
+            get
+            {
+                return isEqualClicked;
+            }
+
+            set
+            {
+                isEqualClicked = value;
             }
         }
 
@@ -58,7 +106,7 @@ namespace Calculator
 
             #region Command
 
-            private DelegateCommand _onClick;
+       private DelegateCommand _onClick;
         
         
 
@@ -70,91 +118,211 @@ namespace Calculator
                 }
             }
 
-            public string _CEText;
-            private void Click(object arg)
+       
+
+       
+        private void Click(object arg)
             {
                
                 switch (arg.ToString())
                 {
                    
                 case "CE":
-                    ButtonText=_CEText;
+                    ButtonText="";
                         break;
                 case "CLEAR":
+
                     ButtonText = "";
+                        Input = "";
                     break;
                 case "9":
-                    _CEText = ButtonText;
+                    if (IsEqualClicked == true)
+                    {
+                        ButtonText = "";
+                    }
+                    IsEqualClicked = false;
+                    ISPlusOrOtherOperationPressed();
                     ButtonText += arg.ToString();
                     break;
                 case "8":
-                    _CEText = ButtonText;
+                    if (IsEqualClicked == true)
+                    {
+                        ButtonText = "";
+                    }
+                    IsEqualClicked = false;
+                    ISPlusOrOtherOperationPressed();
                     ButtonText += arg.ToString();
                     break;
                 case "7":
-                    _CEText = ButtonText;
+                    if (IsEqualClicked == true)
+                    {
+                        ButtonText = "";
+                    }
+                    IsEqualClicked = false;
+                    ISPlusOrOtherOperationPressed();
                     ButtonText += arg.ToString();
                     break;
                 case "6":
-                    _CEText = ButtonText;
+                    if (IsEqualClicked == true)
+                    {
+                        ButtonText = "";
+                    }
+                    IsEqualClicked = false;
+                    ISPlusOrOtherOperationPressed();
                     ButtonText += arg.ToString();
                     break;
                 case "5":
-                    _CEText = ButtonText;
+                    if (IsEqualClicked == true)
+                    {
+                        ButtonText = "";
+                    }
+                    IsEqualClicked = false;
+                    ISPlusOrOtherOperationPressed();
                     ButtonText += arg.ToString();
                     break;
                 case "4":
-                    _CEText = ButtonText;
+                    if (IsEqualClicked == true)
+                    {
+                        ButtonText = "";
+                    }
+                    IsEqualClicked = false;
+                    ISPlusOrOtherOperationPressed();
                     ButtonText += arg.ToString();
                     break;
                 case "3":
-                    _CEText = ButtonText;
+                    IsEqualClicked = false;
+                    ISPlusOrOtherOperationPressed();
                     ButtonText += arg.ToString();
                     break;
                 case "2":
-                    _CEText = ButtonText;
+                    if (IsEqualClicked == true)
+                    {
+                        ButtonText = "";
+                    }
+                    IsEqualClicked = false;
+                    ISPlusOrOtherOperationPressed();
                     ButtonText += arg.ToString();
                     break;
                 case "1":
-                    _CEText = ButtonText;
+                    if (IsEqualClicked == true)
+                    {
+                        ButtonText = "";
+                    }
+                    IsEqualClicked = false;
+                    ISPlusOrOtherOperationPressed();
                     ButtonText += arg.ToString();
                     break;
                 case "0":
+                    if (IsEqualClicked == true)
+                    {
+                        ButtonText = "";
+                    }
+                    IsEqualClicked = false;
+                    ISPlusOrOtherOperationPressed();
                     ButtonText += arg.ToString();
                     break;
                 case "+":
-                    ButtonText += arg.ToString();
+                     
+                        IsEqualClicked = false;
+                    if (ButtonText != "")
+                        {
+                            IsPlusOrMinusClicked = true;
+                            Input += ButtonText;
+                            Input += arg.ToString();
+                        }
+                       ButtonText = "0";
                     break;
+                  
                 case "-":
-                    ButtonText += arg.ToString();
+                    IsEqualClicked = false;
+                    if (ButtonText != "")
+                    {
+                        IsPlusOrMinusClicked = true;
+                        Input += ButtonText;
+                        Input += arg.ToString();
+                   
+                    }
+                    ButtonText = "0";
                     break;
                 case "/":
-                    ButtonText += arg.ToString();
+                    IsEqualClicked = false;
+                    if (ButtonText != "")
+                    {
+                        IsPlusOrMinusClicked = true;
+                        Input += ButtonText;
+                        Input += arg.ToString();
+                    }
+                    ButtonText = "1";
                     break;
                 case "*":
-                    ButtonText += arg.ToString();
+                    IsEqualClicked = false;
+                    if (ButtonText != "")
+                    {
+                        IsPlusOrMinusClicked = true;
+                        Input += ButtonText;
+                        Input += arg.ToString();
+                    }
+                    ButtonText = "1";
+
                     break;
                 case "+-":
-                    ButtonText += arg.ToString();
+                    if(ButtonText!="" && !ButtonText.Contains("-"))
+                    { ButtonText = "-" + ButtonText;
+                    }
+                    else if(ButtonText != "")
+                    {
+                        ButtonText = ButtonText.Remove(0, 1);
+                    }
+                       
                     break;
                 case ".":
-                    ButtonText += arg.ToString();
-                    break;
+                   
+                    if (ButtonText != "" && !ButtonText.Contains(".") && IsEqualClicked==false)
+                        {
+                            ButtonText += arg.ToString();
+                        }
+                        break;
                 case "X":
+                    ButtonText= (ButtonText.Length==0)? "": ButtonText.Substring(0, ButtonText.Length-1);
                     break;
                 case "=":
-                    ButtonText += arg.ToString();
-                    Answer = ButtonText;
-                    ButtonText = "";
+                   
+                   InputFloat(Input);
+                   Input = "";
+                 
                     break;
                 default:
-                        ButtonText = "";
-                        break;
+                    ButtonText = "";
+                    break;
                 }
                   
                 
             }
-           
+        
+            public void ISPlusOrOtherOperationPressed( )
+            {
+                if ((IsPlusOrMinusClicked == true))
+                {
+                    IsPlusOrMinusClicked = false;
+                    ButtonText = "";
+                }
+            }
+
+            public void InputFloat(string input)
+            {
+
+            input += ButtonText;
+            input = "50+20-30*(40-20)";
+            if (input.Length>2 && IsEqualClicked ==false)
+                {
+                    
+                    ButtonText =Calculate.Compute(input).ToString();
+                    IsEqualClicked = true;
+                
+                }
+            }
+
+
 
 
 
@@ -174,4 +342,3 @@ namespace Calculator
             #endregion
         }
     }
-
