@@ -321,11 +321,7 @@ namespace Calculator
                 
                 }
             }
-
-
-
-
-
+        
             #endregion
             #region public methods
            

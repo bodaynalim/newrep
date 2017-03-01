@@ -35,7 +35,6 @@ namespace Calculator
                 {
                     operations.Add(input[i].ToString());
                 }
-
             }
 
 
@@ -43,28 +42,20 @@ namespace Calculator
             {
                 if (operations[i] == "*")
                 {
-                    result = float.Parse(number[i]) * float.Parse(number[i + 1]);
-                    operations.RemoveAt(i);
-                    number[i] = result.ToString();
-                    number.RemoveAt(i + 1);
-                    i = -1;
+                    result = Operation(
+                      operations,
+                      number, i);
                 }
-
-
-
             }
+
             for (int i = 0; i < operations.Count; i++)
             {
                 if (operations[i] == "/")
                 {
-
-                    result = float.Parse(number[i]) / float.Parse(number[i + 1]);
-                    operations.RemoveAt(i);
-                    number[i] = result.ToString();
-                    number.RemoveAt(i + 1);
-                    i = -1;
+                    result = Operation(
+                      operations,
+                      number, i);
                 }
-
             }
 
 
@@ -72,12 +63,9 @@ namespace Calculator
             {
                 if (operations[i] == "+")
                 {
-                    result = float.Parse(number[i]) + float.Parse(number[i + 1]);
-                    operations.RemoveAt(i);
-                    number[i] = result.ToString();
-                    number.RemoveAt(i + 1);
-                    i = -1;
-
+                    result = Operation(
+                      operations,
+                      number, i);
                 }
 
             }
@@ -86,16 +74,40 @@ namespace Calculator
             {
                 if (operations[i] == "-")
                 {
-                    result = float.Parse(number[i]) - float.Parse(number[i + 1]);
-                    operations.RemoveAt(i);
-                    number[i] = result.ToString();
-                    number.RemoveAt(i + 1);
-                    i = -1;
+               result=Operation(
+                        operations,
+                        number, i);
 
                 }
             }
 
             return result.ToString();
+
+        }
+
+        static double Operation(
+        List<string> operations,
+        List<string> number , int i)
+        {
+            double result=0;
+
+            if (operations[i] == "*")
+                result = float.Parse(number[i]) * float.Parse(number[i + 1]);
+            if (operations[i] == "/")
+                result = float.Parse(number[i]) / float.Parse(number[i + 1]);
+            if (operations[i] == "+")
+                result = float.Parse(number[i]) + float.Parse(number[i + 1]);
+            if (operations[i] == "-")
+                result = float.Parse(number[i]) - float.Parse(number[i + 1]);
+               
+            
+            operations.RemoveAt(i);
+            number[i] = result.ToString();
+            number.RemoveAt(i + 1);
+            i = -1;
+            return  result;
+
+
 
         }
 
