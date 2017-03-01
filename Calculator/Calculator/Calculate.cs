@@ -8,142 +8,102 @@ namespace Calculator
 {
     class Calculate
     {
-        static public double Compute(string input)
+        public static string GetResult(string input)
         {
-            string output = GetExpression(input); 
-            double result = Counting(output); 
-            return result; 
 
-        }
+            double result = 0;
+            List<string> operations = new List<string>();
+            List<string> number = new List<string>();
 
-     
-        static private string GetExpression(string input)
-        {
-            string output = string.Empty;
-            Stack<char> operStack = new Stack<char>(); 
-
-            for (int i = 0; i < input.Length; i++) 
+            for (int i = 0; i < input.Length; i++)
             {
-               
-                if (IsDelimeter(input[i]))
-                    continue;
-
-                if (Char.IsDigit(input[i])) 
-                {
-                    
-                    while (!IsDelimeter(input[i]) && !IsOperator(input[i]))
-                    {
-                        output += input[i]; 
-                        i++; 
-
-                        if (i == input.Length) break; 
-                    }
-
-                    output += " ";
-                    i--;
-
-                }
-
-               if (IsOperator(input[i]))
-                {
-                    if (input[i] == '(') 
-                        operStack.Push(input[i]);
-                    else if (input[i] == ')') 
-                    {
-                        char s = operStack.Pop();
-
-                        while (s != '(')
-                        {
-                            output += s.ToString() + ' ';
-                            s = operStack.Pop();
-                        }
-                    }
-                    else 
-                    {
-                        if (operStack.Count > 0) 
-                            if (GetPriority(input[i]) <= GetPriority(operStack.Peek())) 
-                                output += operStack.Pop().ToString() + " ";
-
-                        operStack.Push(char.Parse(input[i].ToString()));
-                       
-                    }
-                }
-            }
-
-            
-            while (operStack.Count > 0)
-                output += operStack.Pop() + " ";
-
-            return output; 
-    }
-
-        
-        static private double Counting(string input)
-        {
-            double result = 0; 
-            Stack<double> temp = new Stack<double>(); 
-
-            for (int i = 0; i < input.Length; i++) 
-            {
-               
                 if (Char.IsDigit(input[i]))
                 {
-                    string a = string.Empty;
-
-                    while (!IsDelimeter(input[i]) && !IsOperator(input[i])) 
+                    string output = "";
+                    while (!IsOperator(input[i]))
                     {
-                        a += input[i]; 
+                        output += input[i];
                         i++;
+
                         if (i == input.Length) break;
                     }
-                    temp.Push(double.Parse(a));
+                    number.Add(output);
                     i--;
+                }
+
+                if (IsOperator(input[i]))
+                {
+                    operations.Add(input[i].ToString());
+                }
+
+            }
+
+
+            for (int i = 0; i < operations.Count; i++)
+            {
+                if (operations[i] == "*")
+                {
+                    result = float.Parse(number[i]) * float.Parse(number[i + 1]);
+                    operations.RemoveAt(i);
+                    number[i] = result.ToString();
+                    number.RemoveAt(i + 1);
+                    i = -1;
+                }
+
+
+
+            }
+            for (int i = 0; i < operations.Count; i++)
+            {
+                if (operations[i] == "/")
+                {
+
+                    result = float.Parse(number[i]) / float.Parse(number[i + 1]);
+                    operations.RemoveAt(i);
+                    number[i] = result.ToString();
+                    number.RemoveAt(i + 1);
+                    i = -1;
+                }
+
+            }
+
+
+            for (int i = 0; i < operations.Count; i++)
+            {
+                if (operations[i] == "+")
+                {
+                    result = float.Parse(number[i]) + float.Parse(number[i + 1]);
+                    operations.RemoveAt(i);
+                    number[i] = result.ToString();
+                    number.RemoveAt(i + 1);
+                    i = -1;
 
                 }
-                else if (IsOperator(input[i])) 
-                {
-                  
-                    double a = temp.Pop();
-                    double b = temp.Pop();
 
-                    switch (input[i]) 
-                    {
-                        case '+': result = b + a; break;
-                        case '-': result = b - a; break;
-                        case '*': result = b * a; break;
-                        case '/': result = b / a; break;
-                    }
-                    temp.Push(result); 
+            }
+
+            for (int i = 0; i < operations.Count; i++)
+            {
+                if (operations[i] == "-")
+                {
+                    result = float.Parse(number[i]) - float.Parse(number[i + 1]);
+                    operations.RemoveAt(i);
+                    number[i] = result.ToString();
+                    number.RemoveAt(i + 1);
+                    i = -1;
+
                 }
             }
-            return temp.Peek(); 
+
+            return result.ToString();
+
         }
 
-        static private bool IsDelimeter(char c)
-        {
-            if ((" =".IndexOf(c) != -1))
-                return true;
-            return false;
-        }
         static private bool IsOperator(char с)
         {
             if (("+-/*()".IndexOf(с) != -1))
                 return true;
             return false;
-        }
-
-        static private byte GetPriority(char s)
-        {
-            switch (s)
-            {
-                case '(': return 0;
-                case ')': return 1;
-                case '+': return 2;
-                case '-': return 2;
-                case '*': return 3;
-                case '/': return 3;
-                default : return 4;
-            }
         }
     }
 }

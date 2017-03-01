@@ -312,11 +312,11 @@ namespace Calculator
             {
 
             input += ButtonText;
-            input = "50+20-30*(40-20)";
+         
             if (input.Length>2 && IsEqualClicked ==false)
-                {
-                    
-                    ButtonText =Calculate.Compute(input).ToString();
+            {
+
+                ButtonText = Calculate.GetResult(input);
                     IsEqualClicked = true;
                 
                 }
