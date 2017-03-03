@@ -83,6 +83,7 @@ namespace Trest
           
 
         }
+      
 
         static private void GetValue(RegistryKeyModel keyNew, RegistryKeyModel newKey1)
 
@@ -104,65 +105,36 @@ namespace Trest
         static private void Comparison(RegistryKeyModel keyNew, RegistryKeyModel newKey1)
 
         {
-            if (keyNew.Values.Count == 0)
-            {
-                for (int i = 0; i < newKey1.Values.Count; i++)
-                {
-                    Console.WriteLine("New Value " + newKey1.Values[i].Name + newKey1.Values[i].Data);
-                }
-            }
-            else if (keyNew.Values.Count == newKey1.Values.Count)
-            {
-                for (int i = 0; i < keyNew.Values.Count; i++)
+            var addedNewValue =
+                newKey1.Values.Where(x => !keyNew.Values.Any(y => x.Name == y.Name)).Select(k => k.Name);
 
-                    if (keyNew.Values[i].Data != newKey1.Values[i].Data && keyNew.Values[i].Name != newKey1.Values[i].Name)
-                    {
-                        Console.WriteLine("Data an Name were changed" + newKey1.Values[i].Name + newKey1.Values[i].Data);
-                    }
-                    else if (keyNew.Values[i].Data == newKey1.Values[i].Data &&
-                             keyNew.Values[i].Name == newKey1.Values[i].Name)
-                    {
-                        Console.WriteLine("Nothing was changed");
-                    }
-                    else if (keyNew.Values[i].Data != newKey1.Values[i].Data &&
-                                 keyNew.Values[i].Name == newKey1.Values[i].Name)
-                    {
-                        Console.WriteLine("Data was changed" + newKey1.Values[i].Name + newKey1.Values[i].Data);
-                    }
-                    else if (keyNew.Values[i].Data == newKey1.Values[i].Data &&
-                                     keyNew.Values[i].Name != newKey1.Values[i].Name)
-                    {
-                        Console.WriteLine("Name of Value was changed" + newKey1.Values[i].Name);
-                    }
-            }
+                Console.WriteLine("Added values: " + string.Join(",", addedNewValue));
 
-            if (keyNew.Path.Count == newKey1.Path.Count)
-            {
-                for (int i = 0; i < keyNew.Path.Count; i++)
-                {
-                    if (keyNew.Path[i] == newKey1.Path[i])
-                    {
-                        Console.WriteLine("Key was not changed" + newKey1.Values[i].Name);
-                    }
-                    if (keyNew.Path[i] != newKey1.Path[i])
-                    {
-                        Console.WriteLine("Key was changed from " + keyNew.Path[i] + " to " + newKey1.Path[i]);
-                    }
+            var deletedValue =
+                keyNew.Values.Where(x => !newKey1.Values.Any(y => x.Name == y.Name)).Select(k => k.Name);
 
-                }
-            }
-            else if (keyNew.Path.Count != newKey1.Path.Count)
-            {
-                if (keyNew.Path.Count > newKey1.Path.Count)
-                {
-                }
-                else if(keyNew.Path.Count < newKey1.Path.Count)
-                {
-                }
-            }
+            Console.WriteLine("Added values: " + string.Join(",", deletedValue));
+
+
+            var changedValue = 
+                newKey1.Values.Where(x => !keyNew.Values.Any(y => x.Data == y.Data)).Select(x => "Name "+ x.Name+" Data "+x.Data );
             
+            Console.WriteLine("Changed Values: " + string.Join(",", changedValue));
 
-            for (int i = 0; i < keyNew.SubKeys.Count; i++)
+               var addedKey =
+                newKey1.Path.Where(x => !keyNew.Path.Any(y => x == y)).Select(x => x);
+
+                Console.WriteLine("Added key: " + string.Join(",", addedKey));
+            
+                var deletedKey = 
+                keyNew.Path.Where(x => !newKey1.Path.Any(y => x == y)).Select(x => x);
+
+                Console.WriteLine("Deleted key: " + string.Join(",", deletedKey));
+           
+
+
+
+            for (int i = 0; i < newKey1.SubKeys.Count; i++)
             {
                 Comparison(keyNew.SubKeys[i], newKey1.SubKeys[i]);
             }
@@ -177,14 +149,15 @@ namespace Trest
             RegistryKeyModel   keyNew =  GetRegistryKey(args[0]);
 
             int j = 0;
+            Console.ReadLine();
 
             SetNewValue(args[0],j);
-
+            
             RegistryKeyModel newKey1 = GetRegistryKey(args[0]);
 
             GetValue(keyNew, newKey1);
             
-            Comparison(newKey1, keyNew);
+            Comparison(keyNew,newKey1);
             
             Console.ReadLine();
 
