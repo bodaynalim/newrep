@@ -1,14 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Net;
-using System.Threading;
-using System.Data;
-using System.Diagnostics;
 using Microsoft.Win32;
 
 namespace Trest
@@ -132,14 +124,13 @@ namespace Trest
 
             Console.WriteLine("Deleted key: " + string.Join(",", deletedKey));
 
-           // var COunt = newKey1.Path.Where(x => keyNew.Path.Any(y => y == x));
-            List<RegistryKeyModel> key1 = newKey1.SubKeys.Where(x=>keyNew.Path.Any(y=> newKey1.Path.Any(c=>c==y))).Select(x=>x).ToList();
-            List<RegistryKeyModel> key2 = keyNew.SubKeys.Where(x=> newKey1.Path.Any(y => keyNew.Path.Any(c=>c==y))).Select(x=>x).ToList();
-          
-            for (int i = 0; i < key1.Count(); i++)
+            List<RegistryKeyModel> key1 = newKey1.SubKeys.Where(x=> keyNew.SubKeys.Any(y=> y.Path.Any(c=> x.Path.Any(v=>c==v)))).ToList();
+            List<RegistryKeyModel> key2 = keyNew.SubKeys.Where(x => newKey1.SubKeys.Any(y => y.Path.Any(c => x.Path.Any(v => c == v)))).ToList();
+
+            
+            for (int i = 0; i < key1.Count; i++)
             {
-              
-                    Comparison(key2[i], key1[i]);
+                Comparison(key2[i], key1[i]);
             }
  }
   
