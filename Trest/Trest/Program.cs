@@ -41,7 +41,8 @@ namespace Trest
       {
           var result = new RegistryKeyModel();
 
-            result.Path.Add(path);
+           
+ 
             
             var key = Registry.CurrentUser.OpenSubKey(path);
 
@@ -59,7 +60,7 @@ namespace Trest
             }
             foreach (var subKeyName in key.GetSubKeyNames())
             {
-                
+                result.Path.Add(path + "\\" + subKeyName);
                 result.SubKeys.Add(GetRegistryKey(path + "\\" + subKeyName));
             }
             
@@ -105,38 +106,40 @@ namespace Trest
         static private void Comparison(RegistryKeyModel keyNew, RegistryKeyModel newKey1)
 
         {
-            var addedNewValue =
+           
+                var addedNewValue =
                 newKey1.Values.Where(x => !keyNew.Values.Any(y => x.Name == y.Name)).Select(k => k.Name);
 
-                Console.WriteLine("Added values: " + string.Join(",", addedNewValue));
+            Console.WriteLine("Added values: " + string.Join(",", addedNewValue));
 
             var deletedValue =
                 keyNew.Values.Where(x => !newKey1.Values.Any(y => x.Name == y.Name)).Select(k => k.Name);
 
-            Console.WriteLine("Added values: " + string.Join(",", deletedValue));
-
+            Console.WriteLine("Deleted values: " + string.Join(",", deletedValue));
 
             var changedValue = 
                 newKey1.Values.Where(x => !keyNew.Values.Any(y => x.Data == y.Data)).Select(x => "Name "+ x.Name+" Data "+x.Data );
             
             Console.WriteLine("Changed Values: " + string.Join(",", changedValue));
 
-               var addedKey =
+            var addedKey =
                 newKey1.Path.Where(x => !keyNew.Path.Any(y => x == y)).Select(x => x);
 
-                Console.WriteLine("Added key: " + string.Join(",", addedKey));
+            Console.WriteLine("Added key: " + string.Join(",", addedKey));
             
-                var deletedKey = 
+            var deletedKey = 
                 keyNew.Path.Where(x => !newKey1.Path.Any(y => x == y)).Select(x => x);
 
-                Console.WriteLine("Deleted key: " + string.Join(",", deletedKey));
-           
+            Console.WriteLine("Deleted key: " + string.Join(",", deletedKey));
 
-
-
-            for (int i = 0; i < newKey1.SubKeys.Count; i++)
+           // var COunt = newKey1.Path.Where(x => keyNew.Path.Any(y => y == x));
+            List<RegistryKeyModel> key1 = newKey1.SubKeys.Where(x=>keyNew.Path.Any(y=> newKey1.Path.Any(c=>c==y))).Select(x=>x).ToList();
+            List<RegistryKeyModel> key2 = keyNew.SubKeys.Where(x=> newKey1.Path.Any(y => keyNew.Path.Any(c=>c==y))).Select(x=>x).ToList();
+          
+            for (int i = 0; i < key1.Count(); i++)
             {
-                Comparison(keyNew.SubKeys[i], newKey1.SubKeys[i]);
+              
+                    Comparison(key2[i], key1[i]);
             }
  }
   
@@ -150,7 +153,7 @@ namespace Trest
 
             int j = 0;
             Console.ReadLine();
-
+            
             SetNewValue(args[0],j);
             
             RegistryKeyModel newKey1 = GetRegistryKey(args[0]);
