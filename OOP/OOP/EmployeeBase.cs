@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,149 +10,150 @@ namespace OOP
 {
     abstract class EmployeeBase
     {
-        private int id {get; set; }
-        private string name { get; set; }
-        private string surname { get; set; }
-       private float _monthSalary;
+        
 
-        protected string Name
-        {
-            get { return name; }
-            set { name = value; }
+        protected string name { get; set; }
+        protected string surname { get; set; }
+        protected int id { get; set; }
+        protected float month_salary { get; set; }
 
-        }
-
-       public EmployeeBase()
+        public EmployeeBase()
        {
-           ID = 1;
-           Name = "Petro";
-           Surname = "Petrov";
-           MonthSalary = 3200;
+           id = 1;
+           name = "Petro";
+           surname = "Petrov";
+            month_salary = 3200;
        }
-        public EmployeeBase( int id, string name, string surname, int salary)
+        public EmployeeBase( int id, string name, string surname, int salary=0)
         {
-            ID = id;
-            Name = name;
-            Surname = surname;
-            MonthSalary = salary;
+            this.id = id;
+            this.name = name;
+            this.surname = surname;
+            this.month_salary = salary;
         }
-        public EmployeeBase(int id, string name, string surname)
-        {
-            ID = id;
-            Name = name;
-            Surname = surname;
+       
       
-        }
-        protected string Surname
-        {
-            get { return surname; }
-            set { surname = value; }
-
-        }
-
-        protected int ID
-        {
-            get { return id; }
-            set { id = value; }
-
-        }
-
-        protected float MonthSalary
-        {
-            get { return _monthSalary; }
-
-            set { _monthSalary = value; }
-
-        }
 
         public abstract float Salary();
 
-        static void Write_to(List<EmployeeHourly> emp, List<EmployeeFixed> empf, string path)
+        static void WriteToFileEmpHourly(List<EmployeeHourly> emp, string path)
         {
             try
             {
-
-                using (StreamWriter sw = new StreamWriter(path, true, System.Text.Encoding.Default))
+                BinaryFormatter formatter = new BinaryFormatter();
+                using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
                 {
                     for (int i = 0; i < emp.Count; i++)
                     {
-                        sw.WriteLine(emp[i].ID + " " + emp[i].Name + " " + emp[i].Surname + " " + emp[i].Salary());
+                        formatter.Serialize(fs,emp[i]);
                     }
-                    for (int i = 0; i < empf.Count; i++)
-                    {
-                        sw.WriteLine(emp[i].ID + " " + emp[i].Name + " " + emp[i].Surname + " " + emp[i].Salary());
-                    }
+             }
 
+            }
+            catch (Exception e)
+            { 
+            }
+        }
+        static void WriteToFileEmpFixed(List<EmployeeFixed> emp, string path)
+        {
+            try
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+                {
+                    for (int i = 0; i < emp.Count; i++)
+                    {
+                        formatter.Serialize(fs, emp[i]);
+                    }
                 }
 
             }
             catch (Exception e)
-            { 
+            {
             }
         }
 
-        static string[] read_from_file(string path)
+        static List<EmployeeHourly> ReadFromFileEmpHourly(string path)
         {
-            string[] empl = new string[] { };
+            List<EmployeeHourly> emp = null;
             try
             {
-                empl = File.ReadAllLines(path);
-                return empl;
+                BinaryFormatter formatter = new BinaryFormatter();
+                using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+                {
+                    emp = (List<EmployeeHourly>) formatter.Deserialize(fs);
+                }
+
             }
             catch (Exception e)
-            { 
+            {
             }
 
-
-            return null;
+            return emp;
         }
+
+        static List<EmployeeFixed> ReadFromFileEmpFixed(string path)
+        {
+            List<EmployeeFixed> emp = null;
+            try
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+                {
+                    emp = (List<EmployeeFixed>)formatter.Deserialize(fs);
+                }
+
+            }
+            catch (Exception e)
+            {
+            }
+
+            return emp;
+        }
+
+
+
 
         static void Main(string[] args)
         {
-            string path = @"employee.txt";
+            string pathEmpFixed = @"employeef.dat";
+            string pathEmpHourly = @"employeeh.dat";
 
-        
-        
             EmployeeFixed[] emp1 = new EmployeeFixed[8];
             EmployeeHourly[] emp2 = new EmployeeHourly[8];
             Random pay = new Random();
             
-
             for (int i = 0; i < emp1.Length; i++)
             {
-                emp1[i] = new EmployeeFixed(i,"Petro"+i,"Petrov"+i,pay.Next(3200,400));
+                emp1[i] = new EmployeeFixed(i,"Petro"+i,"Petrov"+i,pay.Next(3200,4000));
                 emp2[i] = new EmployeeHourly(i, "Ivanov" + i, "Ivan" + i, pay.Next(20, 30));
             }
 
-            List<EmployeeFixed> empf = emp1.OrderBy(x =>x.Salary()).ThenBy(x=> x.Name).Select(x=>x).ToList();
-            List<EmployeeHourly> emph = emp2.OrderBy(x => x.Salary()).ThenBy(x => x.Name).Select(x => x).ToList();
+            List<EmployeeFixed> empf = emp1.OrderBy(x =>x.Salary()).ThenBy(x=> x.name).Select(x=>x).ToList();
+            List<EmployeeHourly> emph = emp2.OrderBy(x => x.Salary()).ThenBy(x => x.name).Select(x => x).ToList();
 
             for (int i=0; i < empf.Count; i++)
             {
-                  Console.WriteLine("Salary Fixed:" + empf[i].ID + " "+ empf[i].Name+" "+ empf[i].Surname+" "+ empf[i].Salary());
-                  Console.WriteLine("Salary Hourly:" + empf[i].ID + " " + empf[i].Name + " " + empf[i].Surname + " " + empf[i].Salary());
+                  Console.WriteLine("Salary Fixed:" + empf[i].id + " "+ empf[i].name+" "+ empf[i].surname+" "+ empf[i].Salary());
+                  Console.WriteLine("Salary Hourly:" + emph[i].id + " " + emph[i].name + " " + emph[i].surname + " " + emph[i].Salary());
             }
 
-            var firstfive = empf.Take(5);
-           
-            foreach (var employee in firstfive)
+            foreach (var employee in empf.Take(5))
             {
-                Console.WriteLine("FirstFive:" + employee.ID + " " + employee.Name);
+                Console.WriteLine("FirstFive:" + employee.id + " " + employee.name);
             }
-
-            var lasthree = empf.Skip(empf.Count-3);
-
-            foreach (var employee in lasthree)
+        
+            foreach (var employee in empf.Skip(empf.Count - 3))
             {
-                Console.WriteLine("Last Three:" + employee.ID);
+                Console.WriteLine("Last Three:" + employee.id);
             }
 
-            Write_to(emph,empf,path);
+            WriteToFileEmpHourly(emph,pathEmpHourly);
+            WriteToFileEmpFixed(empf, pathEmpFixed);
 
-            string[] empl = read_from_file(path);
 
-            Console.WriteLine(string.Join(",", empl));
-
+         
+            
             Console.ReadLine();
 
 

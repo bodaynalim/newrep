@@ -17,7 +17,7 @@ namespace OOP
 
         public override float Salary()
         {
-            return this.MonthSalary;
+            return this.month_salary;
         }
     }
 }
