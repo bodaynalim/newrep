@@ -19,5 +19,11 @@ namespace OOP
             
         }
 
+        public override float Salary {
+            get { return month_salary; }
+
+            set { month_salary = value; }
         }
+    }
+    
 }

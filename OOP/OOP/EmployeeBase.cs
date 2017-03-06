@@ -36,13 +36,9 @@ namespace OOP
 
 
 
-        public float Salary {
-            get {
-               
-                    return month_salary;
-                }
-            set { month_salary = value; }
-        }
+        public abstract float Salary { get; set; }
+
+
 
         static void WriteToFileEmpHourly(EmployeeHourly[] emp, string path)
         {
@@ -70,15 +66,15 @@ namespace OOP
           
         }
 
-        static List<EmployeeHourly> ReadFromFileEmpHourly(string path)
+        static EmployeeHourly[] ReadFromFileEmpHourly(string path)
         {
-            List<EmployeeHourly> emp = null;
+            EmployeeHourly[] emp = null;
             try
             {
-                XmlSerializer formatter = new XmlSerializer(typeof(List<EmployeeHourly>));
+                XmlSerializer formatter = new XmlSerializer(typeof(EmployeeHourly[]));
                 using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
                 {
-                    emp = (List<EmployeeHourly>) formatter.Deserialize(fs);
+                    emp = (EmployeeHourly[]) formatter.Deserialize(fs);
                 }
 
             }
@@ -89,15 +85,15 @@ namespace OOP
             return emp;
         }
 
-        static List<EmployeeFixed> ReadFromFileEmpFixed(string path)
+        static EmployeeFixed[] ReadFromFileEmpFixed(string path)
         {
-            List<EmployeeFixed> emp = null;
+            EmployeeFixed[] emp = null;
             try
             {
-                XmlSerializer formatter = new XmlSerializer(typeof(List<EmployeeFixed>));
+                XmlSerializer formatter = new XmlSerializer(typeof(EmployeeFixed[]));
                 using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
                 {
-                    emp = (List<EmployeeFixed>)formatter.Deserialize(fs);
+                    emp = (EmployeeFixed[])formatter.Deserialize(fs);
                 }
 
             }

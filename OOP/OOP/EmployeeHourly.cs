@@ -28,7 +28,20 @@ namespace OOP
            month_salary = (float)(this.hourpay * 20.8 * 8);
 
         }
-        
-        
-    }
+
+        public override float Salary
+        {
+            get
+            {
+                if (month_salary != null)
+                    return month_salary;
+                else
+                {
+                    month_salary = (float) (hourpay * 20.8 * 8);
+                    return  Single.MaxValue;
+                }
+            }
+            set { month_salary = value; }
+        }
+        }
 }

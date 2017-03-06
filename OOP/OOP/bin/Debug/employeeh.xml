@@ -1,27 +1,27 @@
 <?xml version="1.0"?>
 <ArrayOfEmployeeHourly xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <EmployeeHourly>
-    <Salary>3827.2</Salary>
+    <Salary>3328</Salary>
   </EmployeeHourly>
   <EmployeeHourly>
-    <Salary>3827.2</Salary>
+    <Salary>3494.4</Salary>
   </EmployeeHourly>
   <EmployeeHourly>
-    <Salary>3827.2</Salary>
+    <Salary>3660.8</Salary>
   </EmployeeHourly>
   <EmployeeHourly>
-    <Salary>3993.6</Salary>
+    <Salary>4160</Salary>
+  </EmployeeHourly>
+  <EmployeeHourly>
+    <Salary>4160</Salary>
+  </EmployeeHourly>
+  <EmployeeHourly>
+    <Salary>4160</Salary>
   </EmployeeHourly>
   <EmployeeHourly>
     <Salary>4326.4</Salary>
   </EmployeeHourly>
   <EmployeeHourly>
-    <Salary>4659.2</Salary>
-  </EmployeeHourly>
-  <EmployeeHourly>
     <Salary>4825.6</Salary>
   </EmployeeHourly>
-  <EmployeeHourly>
-    <Salary>4825.6</Salary>
-  </EmployeeHourly>
-</ArrayOfEmployeeHourly>
+</ArrayOfEmployeeHourly>rly>rly>
