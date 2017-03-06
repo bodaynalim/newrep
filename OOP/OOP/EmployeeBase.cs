@@ -5,10 +5,12 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace OOP
 {
-    abstract class EmployeeBase
+    abstract public  class EmployeeBase
     {
         
 
@@ -31,46 +33,41 @@ namespace OOP
             this.surname = surname;
             this.month_salary = salary;
         }
-       
-      
 
-        public abstract float Salary();
 
-        static void WriteToFileEmpHourly(List<EmployeeHourly> emp, string path)
+
+        public float Salary {
+            get {
+               
+                    return month_salary;
+                }
+            set { month_salary = value; }
+        }
+
+        static void WriteToFileEmpHourly(EmployeeHourly[] emp, string path)
         {
-            try
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
+           
+                XmlSerializer formatter = new XmlSerializer(typeof(EmployeeHourly[]));
                 using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
                 {
-                    for (int i = 0; i < emp.Count; i++)
-                    {
-                        formatter.Serialize(fs,emp[i]);
-                    }
+                   formatter.Serialize(fs,emp);
+                    
              }
 
-            }
-            catch (Exception e)
-            { 
-            }
+            
         }
-        static void WriteToFileEmpFixed(List<EmployeeFixed> emp, string path)
+        static void WriteToFileEmpFixed(EmployeeFixed[] emp, string path)
         {
-            try
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
+            
+                XmlSerializer formatter = new XmlSerializer(typeof(EmployeeFixed[]));
                 using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
                 {
-                    for (int i = 0; i < emp.Count; i++)
-                    {
-                        formatter.Serialize(fs, emp[i]);
-                    }
+                    
+                        formatter.Serialize(fs, emp);
+                    
                 }
 
-            }
-            catch (Exception e)
-            {
-            }
+          
         }
 
         static List<EmployeeHourly> ReadFromFileEmpHourly(string path)
@@ -78,7 +75,7 @@ namespace OOP
             List<EmployeeHourly> emp = null;
             try
             {
-                BinaryFormatter formatter = new BinaryFormatter();
+                XmlSerializer formatter = new XmlSerializer(typeof(List<EmployeeHourly>));
                 using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
                 {
                     emp = (List<EmployeeHourly>) formatter.Deserialize(fs);
@@ -97,7 +94,7 @@ namespace OOP
             List<EmployeeFixed> emp = null;
             try
             {
-                BinaryFormatter formatter = new BinaryFormatter();
+                XmlSerializer formatter = new XmlSerializer(typeof(List<EmployeeFixed>));
                 using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
                 {
                     emp = (List<EmployeeFixed>)formatter.Deserialize(fs);
@@ -116,11 +113,11 @@ namespace OOP
 
         static void Main(string[] args)
         {
-            string pathEmpFixed = @"employeef.dat";
-            string pathEmpHourly = @"employeeh.dat";
+           var pathEmpFixed = @"employeef.xml";
+           var pathEmpHourly = @"employeeh.xml";
 
-            EmployeeFixed[] emp1 = new EmployeeFixed[8];
-            EmployeeHourly[] emp2 = new EmployeeHourly[8];
+            var emp1 = new EmployeeFixed[8];
+            var emp2 = new EmployeeHourly[8];
             Random pay = new Random();
             
             for (int i = 0; i < emp1.Length; i++)
@@ -129,13 +126,13 @@ namespace OOP
                 emp2[i] = new EmployeeHourly(i, "Ivanov" + i, "Ivan" + i, pay.Next(20, 30));
             }
 
-            List<EmployeeFixed> empf = emp1.OrderBy(x =>x.Salary()).ThenBy(x=> x.name).Select(x=>x).ToList();
-            List<EmployeeHourly> emph = emp2.OrderBy(x => x.Salary()).ThenBy(x => x.name).Select(x => x).ToList();
+           EmployeeFixed[] empf = emp1.OrderBy(x =>x.Salary).ThenBy(x=> x.name).Select(x=>x).ToList().ToArray();
+            EmployeeHourly[] emph = emp2.OrderBy(x => x.Salary).ThenBy(x => x.name).Select(x => x).ToList().ToArray();
 
-            for (int i=0; i < empf.Count; i++)
+            for (int i=0; i < empf.Length; i++)
             {
-                  Console.WriteLine("Salary Fixed:" + empf[i].id + " "+ empf[i].name+" "+ empf[i].surname+" "+ empf[i].Salary());
-                  Console.WriteLine("Salary Hourly:" + emph[i].id + " " + emph[i].name + " " + emph[i].surname + " " + emph[i].Salary());
+                  Console.WriteLine("Salary Fixed:" + empf[i].id + " "+ empf[i].name+" "+ empf[i].surname+" "+ empf[i].Salary);
+                  Console.WriteLine("Salary Hourly:" + emph[i].id + " " + emph[i].name + " " + emph[i].surname + " " + emph[i].Salary);
             }
 
             foreach (var employee in empf.Take(5))
@@ -143,13 +140,14 @@ namespace OOP
                 Console.WriteLine("FirstFive:" + employee.id + " " + employee.name);
             }
         
-            foreach (var employee in empf.Skip(empf.Count - 3))
+            foreach (var employee in empf.Skip(empf.Length - 3))
             {
                 Console.WriteLine("Last Three:" + employee.id);
             }
 
             WriteToFileEmpHourly(emph,pathEmpHourly);
             WriteToFileEmpFixed(empf, pathEmpFixed);
+
 
 
          

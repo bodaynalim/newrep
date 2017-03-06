@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<ArrayOfEmployeeFixed xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <EmployeeFixed>
+    <Salary>3225</Salary>
+  </EmployeeFixed>
+  <EmployeeFixed>
+    <Salary>3272</Salary>
+  </EmployeeFixed>
+  <EmployeeFixed>
+    <Salary>3326</Salary>
+  </EmployeeFixed>
+  <EmployeeFixed>
+    <Salary>3466</Salary>
+  </EmployeeFixed>
+  <EmployeeFixed>
+    <Salary>3493</Salary>
+  </EmployeeFixed>
+  <EmployeeFixed>
+    <Salary>3583</Salary>
+  </EmployeeFixed>
+  <EmployeeFixed>
+    <Salary>3957</Salary>
+  </EmployeeFixed>
+  <EmployeeFixed>
+    <Salary>3970</Salary>
+  </EmployeeFixed>
+</ArrayOfEmployeeFixed>

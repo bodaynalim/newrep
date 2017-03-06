@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace OOP
 {
-    class EmployeeHourly : EmployeeBase
+   public class EmployeeHourly : EmployeeBase
     {
-        private float hourpay {get; set ;}
+        protected float hourpay {get; set ;}
 
         
 
@@ -28,16 +28,7 @@ namespace OOP
            month_salary = (float)(this.hourpay * 20.8 * 8);
 
         }
-
-        public override float Salary()
-        {
-           
-            return month_salary;
-        }
-
-        public static implicit operator EmployeeHourly(EmployeeFixed v)
-        {
-            throw new NotImplementedException();
-        }
+        
+        
     }
 }
