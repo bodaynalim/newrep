@@ -1,0 +1,6 @@
+C:\Users\pervolo\Documents\live-monitoring\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe.config
+C:\Users\pervolo\Documents\live-monitoring\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe
+C:\Users\pervolo\Documents\live-monitoring\ConsoleApplication1\bin\Debug\ConsoleApplication1.pdb
+C:\Users\pervolo\Documents\live-monitoring\ConsoleApplication1\obj\Debug\ConsoleApplication1.csprojResolveAssemblyReference.cache
+C:\Users\pervolo\Documents\live-monitoring\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+C:\Users\pervolo\Documents\live-monitoring\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb
