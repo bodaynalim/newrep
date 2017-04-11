@@ -76,8 +76,24 @@ namespace GAC
 
                 foreach (var pathToAssembly in PathtoAssemb)
                 {
-                    if (pathToAssembly.Contains(assemblyParameters["Version"]))
-                        assemblyPath = pathToAssembly;
+                    if (assemblyParameters["Culture"] != "neutral")
+                    {
+                        if (pathToAssembly.Contains(assemblyParameters["Version"]) &&
+                            pathToAssembly.Contains(assemblyParameters["Culture"]) && pathToAssembly.Contains(assemblyParameters["PublicKeyToken"]))
+                        {
+                            assemblyPath = pathToAssembly;
+
+                        }
+                    }
+                    else
+                    {
+                        if (pathToAssembly.Contains(assemblyParameters["Version"]) &&
+                            pathToAssembly.Contains(assemblyParameters["PublicKeyToken"]))
+                        {
+                            assemblyPath = pathToAssembly;
+
+                        }
+                    }
                 }
 
 
@@ -91,6 +107,7 @@ namespace GAC
                     });
                 }
             }
+           // assemliesActions = assemliesActions.Distinct(x => x.Path);
             int k = 0;
             foreach (var assem in assemliesActions)
             {
