@@ -69,7 +69,7 @@ namespace GAC
 
                 foreach (var pathToAssembly in fileAssemblyList)
                 {
-                    if(pathToAssembly.Contains(infoAssemly[0]))
+                    if(pathToAssembly.EndsWith(infoAssemly[0]+".dll") || pathToAssembly.EndsWith(infoAssemly[0] + ".exe"))
                         
                         PathtoAssemb.Add(pathToAssembly);
                 }
@@ -82,6 +82,7 @@ namespace GAC
                             pathToAssembly.Contains(assemblyParameters["Culture"]) && pathToAssembly.Contains(assemblyParameters["PublicKeyToken"]))
                         {
                             assemblyPath = pathToAssembly;
+                         
 
                         }
                     }
@@ -91,6 +92,7 @@ namespace GAC
                             pathToAssembly.Contains(assemblyParameters["PublicKeyToken"]))
                         {
                             assemblyPath = pathToAssembly;
+                          
 
                         }
                     }
@@ -107,16 +109,9 @@ namespace GAC
                     });
                 }
             }
-           // assemliesActions = assemliesActions.Distinct(x => x.Path);
-            int k = 0;
-            foreach (var assem in assemliesActions)
-            {
-                k++;
-                Console.WriteLine(assem.Path);
-            }
-            Console.WriteLine(k);
+          
 
-            Console.ReadLine();
+         
 
         }
 
