@@ -18,33 +18,87 @@ namespace GAC
         {
             List<GacAction> assemliesActions = new List<GacAction>();
             List<string> fileAssemblyList = new List<string>();
-
-            GetPathOfAssemlies(fileAssemblyList, StrGacDir);
+            GetPathOfAssemlies(fileAssemblyList,StrGacDir);
             GetPathOfAssemlies(fileAssemblyList, StrGacDir2);
-           
-            foreach (var file in fileAssemblyList)
+
+            System.Diagnostics.Process process = new System.Diagnostics.Process();
+            System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+            startInfo.FileName = "cmd.exe";
+            startInfo.WorkingDirectory = @"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6 Tools";
+            startInfo.Arguments = @"/c gacutil /l";
+            startInfo.RedirectStandardOutput = true;
+            startInfo.UseShellExecute = false;
+            process.StartInfo = startInfo;
+            
+            process.Start();
+
+            List<string> lines = new List<string>();
+            while (!process.StandardOutput.EndOfStream)
             {
-                var assam = Assembly.LoadFile(file);
-                string[] infoAssemly = assam.FullName.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                 lines.Add(process.StandardOutput.ReadLine());
+               
+            }
+
+            List<string> infoAboutAssemblies = new List<string>();
+
+            for (int i = 4; i < lines.Count - 2; i++)
+            {
+                infoAboutAssemblies.Add(lines[i]);
+                
+            }
+
+
+
+            foreach (var assembly in infoAboutAssemblies)
+            {
+                
+                string[] infoAssemly = assembly.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 Dictionary<string, string> assemblyParameters = new Dictionary<string, string>();
 
                 for (int i = 1; i < infoAssemly.Length; i++)
                 {
                     string[] parameter = infoAssemly[i].Split(new char[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
+                    parameter[0] = parameter[0].Replace(" ", string.Empty);
                     assemblyParameters.Add(parameter[0], parameter[1]);
+                   
+                }
+                infoAssemly[0] = infoAssemly[0].Replace(" ", string.Empty);
+                string assemblyPath=null;
+                List<string> PathtoAssemb = new List<string>();
 
+                foreach (var pathToAssembly in fileAssemblyList)
+                {
+                    if(pathToAssembly.Contains(infoAssemly[0]))
+                        
+                        PathtoAssemb.Add(pathToAssembly);
                 }
 
-                Console.WriteLine(infoAssemly[0] + " " + assam.Location);
-                assemliesActions.Add(new GacAction()
+                foreach (var pathToAssembly in PathtoAssemb)
                 {
-                    Name = infoAssemly[0],
-                    Path = file,
-                    Parameters = assemblyParameters
-                });
-              
+                    if (pathToAssembly.Contains(assemblyParameters["Version"]))
+                        assemblyPath = pathToAssembly;
+                }
+
+
+                if (assemblyPath != null)
+                {
+                    assemliesActions.Add(new GacAction()
+                    {
+                        Name = infoAssemly[0],
+                        Path = assemblyPath,
+                        Parameters = assemblyParameters
+                    });
+                }
             }
-          
+            int k = 0;
+            foreach (var assem in assemliesActions)
+            {
+                k++;
+                Console.WriteLine(assem.Path);
+            }
+            Console.WriteLine(k);
+
             Console.ReadLine();
 
         }
