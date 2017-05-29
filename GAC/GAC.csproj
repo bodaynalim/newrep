@@ -50,7 +50,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Advanced.System.Monitoring\Advanced.System.Monitoring.csproj">
+    <ProjectReference Include="..\..\l-m\Advanced.System.Monitoring\Advanced.System.Monitoring.csproj">
       <Project>{885517E6-6170-448E-8045-EB93119D85F3}</Project>
       <Name>Advanced.System.Monitoring</Name>
     </ProjectReference>

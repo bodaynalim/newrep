@@ -10,17 +10,11 @@
 
         xmlns:local="clr-namespace:WpfApplication1"
         mc:Ignorable="d"
-        Title="Downloader demo application" SizeToContent="Height" Width="525">
+        Title="Demo face detection" SizeToContent="Height" Width="425">
  
 <StackPanel Margin="10">
-        <ListView x:Name="listView" Height="100" ItemsSource="{Binding Files}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding Time}" Header="Time"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Site}" Width="100" Header="Site"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+  <Border Background="Black"><Image Height="250" ></Image> </Border>    
+    <ListBox Height="75"></ListBox>
         <Grid Margin="0,10,0,0">
 
             <Grid.ColumnDefinitions>
@@ -29,17 +23,16 @@
 
                 <ColumnDefinition Width="*" />
 
-                <ColumnDefinition Width="*" />
+               
 
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="button" Grid.Column="0" Height="30"  Content="Sync download" Command="{Binding SyncDownload}" IsEnabled="{Binding IsButtonEnabled}"/>
+            <Button x:Name="button" Grid.Column="0" Height="30"  Content="Load Image" Command="{Binding DownloadImage}" />
 
 
-            <Button x:Name="button1" Grid.Column="1" Height="30"  Content="Threaded download" Command="{Binding ThreadDownload}" IsEnabled="{Binding IsButtonEnabled}" />
+            <Button x:Name="button1" Grid.Column="1" Height="30"  Content="Start Face Detection" Command="{Binding ThreadDownload}" IsEnabled="{Binding IsButtonEnabled}" />
 
-
-            <Button x:Name="button2" Grid.Column="2" Height="30"  Content="Async download" Command="{Binding AsyncDownload}" IsEnabled="{Binding IsButtonEnabled}" />
+          
 
         </Grid>
 

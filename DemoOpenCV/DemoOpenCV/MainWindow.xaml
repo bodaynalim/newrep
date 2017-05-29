@@ -1,0 +1,35 @@
+﻿<Window x:Class="DemoOpenCV.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DemoOpenCV"
+        mc:Ignorable="d"
+         Title="Demo face detection" SizeToContent="Height" Width="425">
+
+    <StackPanel Margin="10">
+        <Border Background="Black">
+         <Image Name="Image1" Height="250" ></Image>
+        </Border>
+        <ListView Name="ListView1" Height="75"></ListView>
+        <Grid Margin="0,10,0,0">
+
+            <Grid.ColumnDefinitions>
+
+                <ColumnDefinition Width="*" />
+
+                <ColumnDefinition Width="*" />
+
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="button" Grid.Column="0" Height="30"  Content="Load Image" Click="Button_OnClick"  />
+
+
+            <Button x:Name="button1" Grid.Column="1" Height="30"  Content="Start Face Detection"/>
+
+
+
+        </Grid>
+
+    </StackPanel>
+</Window>

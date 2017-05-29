@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model GuestBookMVC.Models.Phones
+
+
+    <form method="post" class="form-horizontal" role="form" asp-action="Edit" asp-controller="Home">
+        <div>
+            <div asp-validation-summary="ModelOnly"></div>
+            <input type="hidden" value="@Model.Id" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="MessageEmail" class="col-md-2 control-label"></label>
+                <div class="col-md-4">
+                 @Html.TextAreaFor(m=>m.MessageEmail,2,20, null)
+                </div>
+                <span asp-validation-for="MessageEmail"></span>
+            </div>
+          <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" class="btn btn-default" value="Отправить" />
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+    @section scripts{
+
+        @Html.Partial("_ValidationScriptsPartial")
+
+    }

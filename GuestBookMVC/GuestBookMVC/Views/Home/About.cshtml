@@ -1,0 +1,22 @@
+﻿@using System.Collections.Generic
+@model IEnumerable<GuestBookMVC.Models.Phones>
+
+<h3>List of messages</h3>
+<div  class="col-md-2 control-label"><a href="Home/Index">Add new message</a></div>
+<br /><br/>
+<table class="table-condensed">
+    <tr>
+        <td>Name</td>
+        <td>Email</td>
+        <td>Message</td>
+        <td></td>
+    </tr>
+    @foreach (var phone in Model)
+    {
+        <tr>
+            <td>@phone.Name</td>
+            <td>@phone.Email</td>
+            <td>@phone.MessageEmail</td>
+      </tr>
+    }
+</table>

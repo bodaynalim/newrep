@@ -43,6 +43,49 @@
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EP.Analyzer.Biblio">
+      <HintPath>..\..\..\..\Desktop\DemoNer\EP.Sdk\EP.Analyzer.Biblio.dll</HintPath>
+    </Reference>
+    <Reference Include="EP.Analyzer.Business">
+      <HintPath>..\..\..\..\Desktop\DemoNer\EP.Sdk\EP.Analyzer.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="EP.Analyzer.Date">
+      <HintPath>..\..\..\..\Desktop\DemoNer\EP.Sdk\EP.Analyzer.Date.dll</HintPath>
+    </Reference>
+    <Reference Include="EP.Analyzer.Decree">
+      <HintPath>..\..\..\..\Desktop\DemoNer\EP.Sdk\EP.Analyzer.Decree.dll</HintPath>
+    </Reference>
+    <Reference Include="EP.Analyzer.Location">
+      <HintPath>..\..\..\..\Desktop\DemoNer\EP.Sdk\EP.Analyzer.Location.dll</HintPath>
+    </Reference>
+    <Reference Include="EP.Analyzer.Misc">
+      <HintPath>..\..\..\..\Desktop\DemoNer\EP.Sdk\EP.Analyzer.Misc.dll</HintPath>
+    </Reference>
+    <Reference Include="EP.Analyzer.Organization">
+      <HintPath>..\..\..\..\Desktop\DemoNer\EP.Sdk\EP.Analyzer.Organization.dll</HintPath>
+    </Reference>
+    <Reference Include="EP.Analyzer.Person">
+      <HintPath>..\..\..\..\Desktop\DemoNer\EP.Sdk\EP.Analyzer.Person.dll</HintPath>
+    </Reference>
+    <Reference Include="EP.Analyzer.Semantic">
+      <HintPath>..\..\..\..\Desktop\DemoNer\EP.Sdk\EP.Analyzer.Semantic.dll</HintPath>
+    </Reference>
+    <Reference Include="EP.Analyzer.Technical">
+      <HintPath>..\..\..\..\Desktop\DemoNer\EP.Sdk\EP.Analyzer.Technical.dll</HintPath>
+    </Reference>
+    <Reference Include="EP.Core">
+      <HintPath>..\..\..\..\Desktop\DemoNer\EP.Sdk\EP.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="EP.Explanatory">
+      <HintPath>..\..\..\..\Desktop\DemoNer\EP.Sdk\EP.Explanatory.dll</HintPath>
+    </Reference>
+    <Reference Include="EP.Morphology">
+      <HintPath>..\..\..\..\Desktop\DemoNer\EP.Sdk\EP.Morphology.dll</HintPath>
+    </Reference>
+    <Reference Include="LingvoNET, Version=1.1.2.0, Culture=neutral, PublicKeyToken=7d49b21a20bef57b, processorArchitecture=MSIL">
+      <HintPath>..\packages\LingvoNET.1.1.2\lib\LingvoNET.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
