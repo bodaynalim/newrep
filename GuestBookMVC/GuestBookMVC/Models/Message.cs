@@ -19,7 +19,11 @@ namespace GuestBookMVC.Models
         [Required]
         public string Date { get; set; }
 
-        public string IdentityUserId { get; set; }
+        public int? FileId { get; set; }
+
+        public FileModel File { get; set; }
+
+        public string UserId { get; set; }
 
         public User User { get; set; }
 

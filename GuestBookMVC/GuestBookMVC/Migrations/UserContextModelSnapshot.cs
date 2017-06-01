@@ -16,6 +16,20 @@ namespace GuestBookMVC.Migrations
                 .HasAnnotation("ProductVersion", "1.1.2")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("GuestBookMVC.Models.FileModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Path");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Picture");
+                });
+
             modelBuilder.Entity("GuestBookMVC.Models.Message", b =>
                 {
                     b.Property<int>("Id")
@@ -24,7 +38,7 @@ namespace GuestBookMVC.Migrations
                     b.Property<string>("Date")
                         .IsRequired();
 
-                    b.Property<string>("IdentityUserId");
+                    b.Property<int>("FileId");
 
                     b.Property<string>("MessageEmail")
                         .IsRequired()
@@ -33,6 +47,8 @@ namespace GuestBookMVC.Migrations
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FileId");
 
                     b.HasIndex("UserId");
 
@@ -200,6 +216,11 @@ namespace GuestBookMVC.Migrations
 
             modelBuilder.Entity("GuestBookMVC.Models.Message", b =>
                 {
+                    b.HasOne("GuestBookMVC.Models.FileModel", "File")
+                        .WithMany()
+                        .HasForeignKey("FileId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("GuestBookMVC.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");

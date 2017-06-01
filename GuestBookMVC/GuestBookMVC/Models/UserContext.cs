@@ -11,6 +11,7 @@ namespace GuestBookMVC.Models
     public class UserContext : IdentityDbContext<User>
     {
         public DbSet<Message> Messages { get; set; }
+        public DbSet<FileModel> Picture{ get; set; }
 
         public UserContext(DbContextOptions<UserContext> options)
             : base(options)
