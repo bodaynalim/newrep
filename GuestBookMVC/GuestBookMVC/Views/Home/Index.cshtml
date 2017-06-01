@@ -23,7 +23,7 @@
             <div class="form-group">
                 <label asp-for="@(new Message().MessageEmail)" class="col-md-2 control-label"></label>
                 <div class="col-md-4">
-                    <textarea cols="20" type="text" rows="2" asp-for="@(new GuestBookMVC.Models.Message().MessageEmail)" value ="" class="form-control" ></textarea>
+                    <textarea cols="20" type="text" rows="2" asp-for="@(new Message().MessageEmail)" value ="" class="form-control" ></textarea>
                 </div>
                 <span asp-validation-for="@(new Message().MessageEmail)"></span>
             </div>

@@ -21,7 +21,7 @@ namespace GuestBookMVC.Models
 
         public string IdentityUserId { get; set; }
 
-        public IdentityUser User { get; set; }
+        public User User { get; set; }
 
     }
 }

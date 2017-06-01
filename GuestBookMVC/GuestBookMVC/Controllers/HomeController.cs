@@ -16,13 +16,15 @@ namespace GuestBookMVC.Controllers
 {
     public class HomeController : Controller
     {
-        MessageContext db;
+        UserContext db;
+        
         private IMessageEmail em;
 
-        public HomeController(MessageContext context, IMessageEmail email)
+        public HomeController(UserContext context, IMessageEmail email)
         {
             db = context;
             em = email;
+           
         }
 
       

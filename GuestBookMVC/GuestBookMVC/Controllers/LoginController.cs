@@ -12,10 +12,10 @@ namespace GuestBookMVC.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
 
-        public LoginController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public LoginController(UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -23,11 +23,11 @@ namespace GuestBookMVC.Controllers
 
         [HttpPost]
         [ActionName("Reg")]
-        public async Task<IActionResult> Reg(User user)
+        public async Task<IActionResult> Reg(RegistrationViewModel user)
         {
             if (ModelState.IsValid)
             {
-                IdentityUser userreg = new IdentityUser { Email = user.Email, UserName = user.Email };
+               User userreg = new User { Email = user.Email, UserName = user.Email, Town = user.Town};
                 // добавляем пользователя
                 var result = await _userManager.CreateAsync(userreg, user.Password);
                 if (result.Succeeded)

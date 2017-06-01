@@ -8,13 +8,11 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace GuestBookMVC.Models
 {
-    public class MessageContext : IdentityDbContext
+    public class UserContext : IdentityDbContext<User>
     {
-       
-        public DbSet<Message> Messages{ get; set; }
+        public DbSet<Message> Messages { get; set; }
 
-
-        public MessageContext(DbContextOptions<MessageContext> options)
+        public UserContext(DbContextOptions<UserContext> options)
             : base(options)
         {
             
