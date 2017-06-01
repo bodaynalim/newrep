@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GuestBookMVC.Models;
 using GuestBookMVC.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace GuestBookMVC.Controllers
@@ -22,11 +24,14 @@ namespace GuestBookMVC.Controllers
             db = context;
             em = email;
         }
+
+      
+        [HttpGet]
         public IActionResult Index()
         {
-            ViewBag.id = LoginController.isAdmin;
-            ViewBag.isLog = LoginController.isLogin;
-            return View(db.Phone.ToList());
+            ViewData["UserId"] = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name).Id;
+                
+           return View(db.Messages.ToList());
         }
 
         [HttpGet]
@@ -36,43 +41,33 @@ namespace GuestBookMVC.Controllers
 
             if (id != null)
             {
-                Phones phone = db.Phone.FirstOrDefault(p => p.Id == id);
+                Message phone = db.Messages.FirstOrDefault(p => p.Id == id);
                 if (phone != null)
                 {
-                    db.Phone.Remove(phone);
+                    db.Messages.Remove(phone);
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
             }
-            return View(db.Phone.ToList());
+            return View(db.Messages.ToList());
         }
 
         
 
         [HttpPost]
-        public IActionResult Index(Phones message)
+        public IActionResult Index(Message message)
         {
-            
+            message.IdentityUserId = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name).Id;
             if (ModelState.IsValid)
             {
-                if (db.Phone.Any(x=>x.Name == message.Name && x.Email == message.Email && x.MessageEmail == message.MessageEmail))
-                {
-                }
-                else
-                {
-                    if (message.MessageEmail.Contains("\n"))
-                    {
-                        //   message.MessageEmail.Replace("\n", "</br>"); 
-                    }
-                    db.Phone.Add(message);
-                    Response.Cookies.Append(message.Name, message.MessageEmail);
+                    db.Messages.Add(message);
+                   // Response.Cookies.Append(message.Name, message.MessageEmail);
                     db.SaveChanges();
 
-                  em.Send(message.Email);
-                }
+                    return Index(); 
+                //   em.Send(message.Email);
                 
             }
-
 
             return RedirectToAction("Index");
         }
@@ -82,20 +77,20 @@ namespace GuestBookMVC.Controllers
         {
             
             
-            return View(new Phones(){Id = id,MessageEmail = db.Phone.FirstOrDefault(p => p.Id == id).MessageEmail });
+            return View(new Message(){Id = id,MessageEmail = db.Messages.FirstOrDefault(p => p.Id == id).MessageEmail });
         }
 
         [HttpPost]
         [ActionName("Edit")]
-        public IActionResult Edit(Phones phone)
+        public IActionResult Edit(Message phone)
         {
 
             if (phone.Id != null)
             {
-                Phones phones = db.Phone.FirstOrDefault(p => p.Id == phone.Id);
+                Message phones = db.Messages.FirstOrDefault(p => p.Id == phone.Id);
                 if (phones != null)
                 {
-                    db.Phone.FirstOrDefault(p => p.Id == phone.Id).MessageEmail = phone.MessageEmail;
+                    db.Messages.FirstOrDefault(p => p.Id == phone.Id).MessageEmail = phone.MessageEmail;
                     db.SaveChanges();
 
                 }

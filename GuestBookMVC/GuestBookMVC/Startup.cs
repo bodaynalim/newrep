@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using GuestBookMVC.Models;
 using GuestBookMVC.Services;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace GuestBookMVC
@@ -28,9 +29,12 @@ namespace GuestBookMVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<MessageContext>(options => options.UseSqlServer(connection));
+           services.AddDbContext<MessageContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<IMessageEmail, SendToEmail>();
+
+            services.AddIdentity<IdentityUser,IdentityRole>()
+                .AddEntityFrameworkStores<MessageContext>();
             services.AddMvc();
         }
 
@@ -52,7 +56,10 @@ namespace GuestBookMVC
 
             app.UseStaticFiles();
 
-            app.UseMvc(routes =>
+            app.UseIdentity();
+            
+            
+                app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",

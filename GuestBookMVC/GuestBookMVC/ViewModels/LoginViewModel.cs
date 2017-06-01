@@ -4,11 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GuestBookMVC.Models
+namespace GuestBookMVC.ViewModels
 {
-    public class User 
+    public class LoginViewModel
     {
-
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -18,10 +17,6 @@ namespace GuestBookMVC.Models
         [Display(Name = "Пароль")]
         public string Password { get; set; }
 
-        [Required]
-        [Compare("Password", ErrorMessage = "Пароли не совпадают")]
-        [DataType(DataType.Password)]
-        [Display(Name = "Подтвердить пароль")]
-        public string PasswordConfirm { get; set; }
+       
     }
 }

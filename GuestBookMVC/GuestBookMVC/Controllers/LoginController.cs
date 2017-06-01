@@ -3,41 +3,94 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GuestBookMVC.Models;
+using GuestBookMVC.ViewModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GuestBookMVC.Controllers
 {
     public class LoginController : Controller
     {
-        private static readonly User[] Users = new User[2]{ new User( "Bogdan", "Nalyvaiko", true), new User("Bogdan2", "Nalyvaiko", false) };
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public IActionResult LIndex()
+        public LoginController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
-            return View();
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
-        public static bool isAdmin;
-        public static bool isLogin;
         [HttpPost]
-        [ActionName("Redirect")]
-        public IActionResult Redirect(User user)
+        [ActionName("Reg")]
+        public async Task<IActionResult> Reg(User user)
         {
-            if (user.Login == Users[0].Login && user.Password == Users[0].Password)
+            if (ModelState.IsValid)
             {
-                isAdmin = Users[0].IsAdmin;
-                isLogin = Users[0].IsLoginnig = true;
-                return Redirect("~/Home/Index");
-
+                IdentityUser userreg = new IdentityUser { Email = user.Email, UserName = user.Email };
+                // добавляем пользователя
+                var result = await _userManager.CreateAsync(userreg, user.Password);
+                if (result.Succeeded)
+                {
+                    // установка куки
+                    await _signInManager.SignInAsync(userreg, false);
+                    return RedirectToAction("LIndex", "Login");
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
             }
-            if (user.Login == Users[1].Login && user.Password == Users[1].Password)
-            {
-                isAdmin = Users[1].IsAdmin;
 
-                isLogin = Users[1].IsLoginnig = true;
-                return Redirect("~/Home/Index");
-            }
+            return View(user);
+        }
+        public IActionResult LIndex()
+        {
+            if (User.Identity.IsAuthenticated)
+            { return RedirectToAction("Index", "Home"); }
 
             return View("LIndex");
+        }
+
+        [HttpGet]
+        public IActionResult Reg()
+        {
+            return View("Reg");
+        }
+
+
+   
+        [HttpPost]
+        [ActionName("LIndex")]
+        public async Task<IActionResult> LIndex(LoginViewModel user)
+        {
+            if (ModelState.IsValid)
+            {
+                var result =
+                    await _signInManager.PasswordSignInAsync(user.Email, user.Password,false,false);
+                if (result.Succeeded)
+                {
+                   return RedirectToAction("Index", "Home");
+                    
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Неправильный логин и (или) пароль");
+                }
+            }
+            return View(user);
+            
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LogOff()
+        {
+            // удаляем аутентификационные куки
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("LIndex", "Login");
         }
     }
 }
