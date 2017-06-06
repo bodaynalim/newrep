@@ -32,9 +32,13 @@ namespace XUnitTest
            
                 var controller = new HomeController(context, mock1.Object, mock2.Object);
                 Message mess = new Message()
-                                            { MessageEmail = null, Id=4, Date = "adsd", UserId = "Apple12" };
-                await controller.Index(mess, null);
-              
+                                            { MessageEmail = "DAAAskskwlwee", Id=4, Date = "adsd", UserId = "Apple12" };
+
+                if (IsModelValid(mess))
+                {
+                    await controller.Index(mess, null);
+                }
+
                 // Assert
                 Assert.Contains(mess, HomeController.db.Messages);
             }
@@ -46,15 +50,21 @@ namespace XUnitTest
         {
             
                 Message mess = new Message() { MessageEmail = "sdfpopopop", Id = 4, Date = "adsd", UserId = "Apple12" };
-
-                var valcontext = new ValidationContext(mess, null, null);
-                var valresult = new List<ValidationResult>();
-                var valid = Validator.TryValidateObject(mess, valcontext, valresult, true);
+            
                // Assert
-                Assert.True(valid);
+                Assert.True(IsModelValid(mess));
             
 
         }
+
+        public bool IsModelValid(Message mess)
+        {
+            var valcontext = new ValidationContext(mess, null, null);
+            var valresult = new List<ValidationResult>();
+            var valid = Validator.TryValidateObject(mess, valcontext, valresult, true);
+            return valid;
+        }
+
         [Fact]
         public void ValidateModelRegModel()
         {
