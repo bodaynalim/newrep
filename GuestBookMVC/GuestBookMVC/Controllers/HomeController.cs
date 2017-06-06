@@ -18,8 +18,8 @@ namespace GuestBookMVC.Controllers
 {
     public class HomeController : Controller
     {
-        UserContext db;
-        
+
+        public static UserContext db;
         private IMessageEmail em;
         IHostingEnvironment _appEnvironment;
 
@@ -27,7 +27,6 @@ namespace GuestBookMVC.Controllers
         {
             db = context;
             em = email;
-
             _appEnvironment = appEnvironment;
         }
 
@@ -63,48 +62,49 @@ namespace GuestBookMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(Message message, IFormFile uploadedFile)
         {
-            message.UserId = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name).Id;
+            
             if (ModelState.IsValid)
             {
-
                 // Response.Cookies.Append(message.Name, message.MessageEmail);
                 //   em.Send(message.Email);
-
+                // message.UserId = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name).Id;
                 message.FileId = null;
 
-            if (uploadedFile != null && uploadedFile.Length < 10000000 && (uploadedFile.ContentType== "image/jpeg"
-                    || uploadedFile.ContentType == "image/png"))
-            {  
-                string FileName = Guid.NewGuid() + uploadedFile.FileName;
-                string path = "/Pictures/" + FileName;
-
-
-                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                if (uploadedFile != null && uploadedFile.Length < 10000000 && (uploadedFile.ContentType == "image/jpeg"
+                        || uploadedFile.ContentType == "image/png"))
                 {
-                    await uploadedFile.CopyToAsync(fileStream);
-                }
+                    string FileName = Guid.NewGuid() + uploadedFile.FileName;
+                    string path = "/Pictures/" + FileName;
+
+
+                    using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                    {
+                        await uploadedFile.CopyToAsync(fileStream);
+                    }
 
                     FileModel file = new FileModel
-                {
-                    Name = FileName,
-                    Path = path,
-                 };
+                    {
+                        Name = FileName,
+                        Path = path,
+                    };
 
-                db.Picture.Add(file);
+                    db.Picture.Add(file);
 
-                message.FileId = file.Id;
+                    message.FileId = file.Id;
 
-            }
+
+                }
                 db.Messages.Add(message);
                 db.SaveChanges();
             }
           
 
 
-            return RedirectToAction("Index");
+            return View("Index");
         }
 
         
+
         [HttpGet]
         public IActionResult Edit(int id)
         {

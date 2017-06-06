@@ -33,7 +33,7 @@ namespace GuestBookMVC.Controllers
                 if (result.Succeeded)
                 {
                     // установка куки
-                    await _signInManager.SignInAsync(userreg, false);
+                   // await _signInManager.SignInAsync(userreg, false);
                     return RedirectToAction("LIndex", "Login");
                 }
                 else
@@ -50,7 +50,9 @@ namespace GuestBookMVC.Controllers
         public IActionResult LIndex()
         {
             if (User.Identity.IsAuthenticated)
-            { return RedirectToAction("Index", "Home"); }
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
             return View("LIndex");
         }
