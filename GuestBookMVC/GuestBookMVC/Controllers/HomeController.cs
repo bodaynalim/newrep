@@ -35,8 +35,8 @@ namespace GuestBookMVC.Controllers
         public IActionResult Index()
         {
             ViewData["UserId"] = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name).Id;
-                
-           return View(db.Messages.ToList());
+            
+            return View(db.Messages.ToList());
         }
 
         [HttpGet]
@@ -67,7 +67,7 @@ namespace GuestBookMVC.Controllers
             {
                 // Response.Cookies.Append(message.Name, message.MessageEmail);
                 //   em.Send(message.Email);
-                // message.UserId = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name).Id;
+                message.UserId = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name).Id;
                 message.FileId = null;
 
                 if (uploadedFile != null && uploadedFile.Length < 10000000 && (uploadedFile.ContentType == "image/jpeg"
@@ -97,10 +97,8 @@ namespace GuestBookMVC.Controllers
                 db.Messages.Add(message);
                 db.SaveChanges();
             }
-          
 
-
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
         

@@ -16,9 +16,10 @@
                    @if (User.Identity.IsAuthenticated)
                    {
                        <li><a href="~/Home/Index" class="navbar-brand">Main</a></li>
-                    }
-                    else
-                    {
+                    <li><a href="~/ChangeData/EditPersonalData" class="navbar-brand">PersonalData</a></li>
+                   }
+                   else
+                   {
                     <li><a href="~/Login/LIndex" class="navbar-brand">Main</a></li>
                     <li><a href="~/Login/Reg" class="navbar-brand">Registration</a></li>
                     }

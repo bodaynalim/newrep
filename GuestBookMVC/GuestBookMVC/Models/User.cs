@@ -10,5 +10,9 @@ namespace GuestBookMVC.Models
     public class User : IdentityUser
     {
        public string Town { get; set; }
+
+        public int? FileId { get; set; }
+
+        public FileModel File { get; set; }
     }
 }

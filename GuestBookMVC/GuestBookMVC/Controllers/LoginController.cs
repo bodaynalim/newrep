@@ -27,7 +27,7 @@ namespace GuestBookMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-               User userreg = new User { Email = user.Email, UserName = user.Email, Town = user.Town};
+               User userreg = new User { Email = user.Email, UserName = user.Email, Town = user.Town, FileId = null};
                 // добавляем пользователя
                 var result = await _userManager.CreateAsync(userreg, user.Password);
                 if (result.Succeeded)
