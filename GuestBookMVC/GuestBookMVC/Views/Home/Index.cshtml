@@ -70,7 +70,7 @@
             <tr>
                 @if (HomeController.db.Users.FirstOrDefault(y => y.Id == phone.UserId).FileId != null)
                 {
-                    <td><img   height="70" src="@HomeController.db.Picture.FirstOrDefault(x => x.Id == HomeController.db.Users.FirstOrDefault(y => y.Id == phone.UserId).FileId).Path"/></td>
+                    <td><img   src="@HomeController.db.Picture.FirstOrDefault(x => x.Id == HomeController.db.Users.FirstOrDefault(y => y.Id == phone.UserId).FileId).Path"/></td>
                 }
                 else
                 {

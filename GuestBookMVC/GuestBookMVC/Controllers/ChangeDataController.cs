@@ -51,13 +51,23 @@ namespace GuestBookMVC.Controllers
                 {
                     string FileName = Guid.NewGuid() + uploadedFile.FileName;
                     string path = "/Pictures/" + FileName;
-                   
+
+                    Image image = Image.FromStream(uploadedFile.OpenReadStream(), true, true);
+
                     
-                   
-                    using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                    float ratio = (float)image.Width/image.Height;
+
+                    var width = 70.0 * ratio;
+
+                    using (Image smallImage = image.GetThumbnailImage((int)width, 70, null, IntPtr.Zero))
                     {
-                        await uploadedFile.CopyToAsync(fileStream);
+                        smallImage.Save(_appEnvironment.WebRootPath + path);
                     }
+
+                    //using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                    //{
+                    //    await uploadedFile.CopyToAsync(fileStream);
+                    //}
 
                     FileModel file = new FileModel
                     {
